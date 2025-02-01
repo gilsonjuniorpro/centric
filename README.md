@@ -4,7 +4,7 @@ This project demonstrates a clean architecture implementation in Flutter, follow
 and utilizing Riverpod for state management and Freezed for immutable data classes.
 
 ## Project Structure
-
+```
 lib/
 ├── data/
 │   ├── models/        # Model classes (using Freezed)
@@ -22,6 +22,7 @@ lib/
 │
 ├── core/             # Common classes and utilities
 ├── app.dart          # Application entry point
+```
 
 ## Directory Breakdown
 
