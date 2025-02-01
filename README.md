@@ -97,7 +97,7 @@ class ApiService {
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/flutter-project.git
+   git clone https://github.com/gilsonjuniorpro/centric.git
    cd flutter-project
    ```
 
