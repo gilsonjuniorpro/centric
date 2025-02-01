@@ -116,12 +116,4 @@ class ApiService {
 ## 📜 License
 This project is licensed under the MIT License.
 
----
-
-## 🤝 Contributions
-Feel free to contribute by submitting a pull request or reporting an issue!
-
----
-
-Happy coding! 🚀
 
