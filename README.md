@@ -6,19 +6,22 @@ and utilizing Riverpod for state management and Freezed for immutable data class
 ## Project Structure
 
 lib/
-data/
-models/        # Data models (Freezed)
-repositories/  # Repositories (interfaces and implementations)
-sources/       # Local and remote data sources
-domain/
-entities/      # Business entities
-usecases/      # Use cases (business logic)
-presentation/
-pages/         # Application screens
-widgets/       # Reusable widgets
-providers/     # Riverpod providers (state management)
-core/           # Common classes and functions
-app.dart        # Application entry point
+├── data/
+│   ├── models/        # Model classes (using Freezed)
+│   ├── repositories/  # Repository interfaces and implementations
+│   ├── sources/       # Local and remote data sources
+│
+├── domain/
+│   ├── entities/      # Business entities
+│   ├── usecases/      # Use cases (business logic)
+│
+├── presentation/
+│   ├── pages/         # App screens
+│   ├── widgets/       # Reusable UI components
+│   ├── providers/     # Riverpod providers (state management)
+│
+├── core/             # Common classes and utilities
+├── app.dart          # Application entry point
 
 ## Directory Breakdown
 
