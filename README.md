@@ -1,27 +1,26 @@
 # Centric - Flutter Clean Architecture Example
 
-This project demonstrates a clean architecture implementation in Flutter, following best practices
-and utilizing Riverpod for state management and Freezed for immutable data classes.
+Welcome to Flutter Project! This repository follows a clean and scalable architecture using Riverpod, Freezed, and separation of concerns principles. Below, you'll find a detailed explanation of the project structure and its usage.
 
-## Project Structure
+📂 Project Structure
 ```
 lib/
-├── data/
-│   ├── models/        # Model classes (using Freezed)
-│   ├── repositories/  # Repository interfaces and implementations
-│   ├── sources/       # Local and remote data sources
-│
-├── domain/
-│   ├── entities/      # Business entities
-│   ├── usecases/      # Use cases (business logic)
-│
-├── presentation/
-│   ├── pages/         # App screens
-│   ├── widgets/       # Reusable UI components
-│   ├── providers/     # Riverpod providers (state management)
-│
-├── core/             # Common classes and utilities
-├── app.dart          # Application entry point
+  ├── 📂 data/
+  │   ├── 📁 models/        # 🏗️ Model classes (using Freezed)
+  │   ├── 📁 repositories/  # 🔄 Repository interfaces and implementations
+  │   ├── 📁 sources/       # 🌐 Local and remote data sources
+  │
+  ├── 📂 domain/
+  │   ├── 📁 entities/      # 🏢 Business entities
+  │   ├── 📁 usecases/      # ⚡ Use cases (business logic)
+  │
+  ├── 📂 presentation/
+  │   ├── 📁 pages/         # 📱 App screens
+  │   ├── 📁 widgets/       # 🔳 Reusable UI components
+  │   ├── 📁 providers/     # 🔄 Riverpod providers (state management)
+  │
+  ├── 📂 core/             # ⚙️ Common classes and utilities
+  ├── 📄 app.dart          # 🚀 Application entry point
 ```
 
 ## Directory Breakdown
