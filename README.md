@@ -37,18 +37,20 @@ Data models represent the structured format of data retrieved from APIs or datab
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_model.freezed.dart';
-part 'user_model.g.dart';
+part 'product.freezed.dart';
+part 'product.g.dart';
 
 @freezed
-class UserModel with _$UserModel {
-  factory UserModel({
-    required String id,
-    required String name,
-    required String email,
-  }) = _UserModel;
+class ProductModel with _$ProductModel {
+   factory ProductModel({
+      required int id,
+      required String title,
+      required String description,
+      required double price,
+      required String thumbnail,
+   }) = _ProductModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 }
 ```
 
@@ -56,40 +58,127 @@ class UserModel with _$UserModel {
 Repositories define an abstraction layer to fetch data from different sources.
 
 ```dart
-abstract class UserRepository {
-  Future<UserModel> getUserById(String id);
+import '../models/product.dart';
+
+abstract class ProductRepository {
+   Future<List<ProductModel>> getProducts();
 }
 ```
 
 Implementation of the repository:
 
 ```dart
-import 'package:your_project/data/sources/api_service.dart';
+import '../models/product.dart';
+import '../sources/product_remote_source.dart';
+import 'product_repository.dart';
 
-class UserRepositoryImpl implements UserRepository {
-  final ApiService apiService;
+class ProductRepositoryImpl implements ProductRepository {
+   final ProductRemoteSource remoteSource;
 
-  UserRepositoryImpl(this.apiService);
+   ProductRepositoryImpl(this.remoteSource);
 
-  @override
-  Future<UserModel> getUserById(String id) async {
-    final response = await apiService.getUser(id);
-    return UserModel.fromJson(response);
-  }
+   @override
+   Future<List<ProductModel>> getProducts() async {
+      return await remoteSource.fetchProducts();
+   }
 }
+
 ```
 
 #### `sources/` - Data Sources (Local and Remote)
 
 ```dart
-class ApiService {
-  Future<Map<String, dynamic>> getUser(String id) async {
-    // Simulating an API call
-    await Future.delayed(Duration(seconds: 2));
-    return {'id': id, 'name': 'John Doe', 'email': 'john.doe@example.com'};
-  }
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../models/product.dart';
+
+class ProductRemoteSource {
+   final String apiUrl = 'https://dummyjson.com/products';
+
+   Future<List<ProductModel>> fetchProducts() async {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+         final data = json.decode(response.body);
+         return (data['products'] as List)
+                 .map((json) => ProductModel.fromJson(json))
+                 .toList();
+      } else {
+         throw Exception('Failed to load products');
+      }
+   }
 }
 ```
+
+📂 lib/domain/entities/
+
+Entities represent the core business objects used in the application.
+
+```dart
+class ProductEntity {
+   final int id;
+   final String title;
+   final String description;
+   final double price;
+   final String thumbnail;
+
+   ProductEntity({
+      required this.id,
+      required this.title,
+      required this.description,
+      required this.price,
+      required this.thumbnail,
+   });
+}
+```
+
+📂 lib/domain/usecases/
+
+Use cases represent business logic operations.
+
+```dart
+import '../entities/product_entity.dart';
+import '../../data/repositories/product_repository.dart';
+
+class GetProductsUseCase {
+   final ProductRepository repository;
+
+   GetProductsUseCase(this.repository);
+
+   Future<List<ProductEntity>> call() async {
+      final products = await repository.getProducts();
+      return products.map((model) => ProductEntity(
+         id: model.id,
+         title: model.title,
+         description: model.description,
+         price: model.price,
+         thumbnail: model.thumbnail,
+      )).toList();
+   }
+}
+```
+
+📂 lib/presentation/providers/
+
+Riverpod providers for dependency injection and state management.
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../domain/usecases/get_products_usecase.dart';
+import '../../domain/entities/product_entity.dart';
+import '../../data/repositories/product_repository_impl.dart';
+import '../../data/sources/product_remote_source.dart';
+
+final productRepositoryProvider = Provider((ref) {
+   return ProductRepositoryImpl(ProductRemoteSource());
+});
+
+final productProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) async {
+   final repository = ref.read(productRepositoryProvider);
+   final useCase = GetProductsUseCase(repository);
+   return await useCase();
+});
+```
+
 
 ---
 

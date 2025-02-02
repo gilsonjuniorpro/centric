@@ -5,28 +5,28 @@ import '../providers/product_provider.dart';
 import '../widgets/loading_indicator.dart';
 
 class ProductsPage extends ConsumerWidget {
+  const ProductsPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(productProvider);
     final categoriesAsync = ref.watch(categoriesProvider);
 
-    // Force loading if any provider is still fetching data
     final isLoading = productsAsync.isLoading || categoriesAsync.isLoading;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Products')),
+      appBar: AppBar(title: const Text('Products')),
       body: Stack(
         children: [
           Column(
             children: [
-              // Categories
               categoriesAsync.when(
                 data: (categories) => Wrap(
                   spacing: 8,
                   children: categories.map((cat) => Chip(label: Text(cat))).toList(),
                 ),
-                loading: () => SizedBox(), // Keep UI from flickering
-                error: (_, __) => SizedBox(),
+                loading: () => const SizedBox(), // Keep UI from flickering
+                error: (_, __) => const SizedBox(),
               ),
 
               // Products
@@ -43,8 +43,8 @@ class ProductsPage extends ConsumerWidget {
                       );
                     },
                   ),
-                  loading: () => SizedBox(), // Prevent UI flicker
-                  error: (e, _) => Center(child: Text('Failed to load products')),
+                  loading: () => const SizedBox(), // Prevent UI flicker
+                  error: (e, _) => const Center(child: Text('Failed to load products')),
                 ),
               ),
             ],
