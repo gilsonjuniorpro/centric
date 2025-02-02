@@ -29,10 +29,15 @@ class ProductsPage extends ConsumerWidget {
                 error: (_, __) => const SizedBox(),
               ),
 
-              // Products
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Divider(thickness: 1, height: 1),
+              ),
+
+              // Products List with Divider
               Expanded(
                 child: productsAsync.when(
-                  data: (products) => ListView.builder(
+                  data: (products) => ListView.separated(
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       final product = products[index];
@@ -42,6 +47,7 @@ class ProductsPage extends ConsumerWidget {
                         subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
                       );
                     },
+                    separatorBuilder: (context, index) => const Divider(thickness: 1, height: 1),
                   ),
                   loading: () => const SizedBox(), // Prevent UI flicker
                   error: (e, _) => const Center(child: Text('Failed to load products')),
