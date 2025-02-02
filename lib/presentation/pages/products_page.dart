@@ -55,7 +55,7 @@ class ProductsPage extends ConsumerWidget {
             Positioned.fill(
               child: Container(
                 color: Colors.black.withOpacity(0.8),
-                child: const LoadingIndicator(message: "Carregando"),
+                child: const LoadingIndicator(),
               ),
             ),
         ],
